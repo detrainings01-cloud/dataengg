@@ -1,0 +1,6 @@
+customer_id,name,email,city,tier
+1,Alice Johnson,alice@email.com,New York,Gold
+2,Bob Smith,bob@email.com,Chicago,Silver
+3,Carol White,carol@email.com,Los Angeles,Gold
+4,David Lee,david@email.com,Houston,Bronze
+5,Eva Brown,eva@email.com,Phoenix,Silver

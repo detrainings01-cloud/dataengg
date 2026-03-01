@@ -1,0 +1,10 @@
+{
+  "user": "YOUR_USER",
+  "password": "YOUR_PASSWORD",
+  "account": "YOUR_ACCOUNT",
+  "warehouse": "COMPUTE_WH",
+  "database": "DEMO_DB",
+  "schema": "PUBLIC",
+  "stage": "orders_stage",
+  "data_folder": "data"
+}

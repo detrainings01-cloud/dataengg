@@ -1,0 +1,5 @@
+order_id,customer_name,amount,order_date
+1,John Doe,100.50,2026-02-27
+2,Jane Smith,250.75,2026-02-27
+3,Bob Johnson,350.00,2026-02-27
+4,Alice Williams,550.25,2026-02-27

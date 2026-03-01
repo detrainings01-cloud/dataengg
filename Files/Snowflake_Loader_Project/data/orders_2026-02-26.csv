@@ -1,0 +1,4 @@
+order_id,customer_id,customer_name,product,category,quantity,amount,updated_at
+1004,C104,Meena,Table,Furniture,1,400,2026-02-26 09:45:00
+1005,C105,Suresh,Headphones,Electronics,2,200,2026-02-26 10:10:00
+1002,C102,Anu,Mobile,Electronics,1,550,2026-02-26 11:20:00

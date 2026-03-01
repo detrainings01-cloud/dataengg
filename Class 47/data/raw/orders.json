@@ -1,0 +1,42 @@
+[
+  {
+    "order_id": 101,
+    "customer_id": 1,
+    "product": "Laptop",
+    "qty": 1,
+    "price": 999.99,
+    "status": "delivered"
+  },
+  {
+    "order_id": 102,
+    "customer_id": 2,
+    "product": "Mouse",
+    "qty": 2,
+    "price": 25.0,
+    "status": "shipped"
+  },
+  {
+    "order_id": 103,
+    "customer_id": 3,
+    "product": "Monitor",
+    "qty": 1,
+    "price": 349.99,
+    "status": "pending"
+  },
+  {
+    "order_id": 104,
+    "customer_id": 1,
+    "product": "Keyboard",
+    "qty": 1,
+    "price": 79.99,
+    "status": "delivered"
+  },
+  {
+    "order_id": 105,
+    "customer_id": 5,
+    "product": "Webcam",
+    "qty": 1,
+    "price": 89.99,
+    "status": "shipped"
+  }
+]

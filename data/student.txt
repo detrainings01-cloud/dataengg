@@ -1,0 +1,29 @@
+StudentID: 1001
+Name: Alice Johnson
+Age: 20
+Course: Computer Science
+Email: alice.johnson@example.com
+-------------------------
+StudentID: 1002
+Name: Brian Smith
+Age: 22
+Course: Mechanical Engineering
+Email: brian.smith@example.com
+-------------------------
+StudentID: 1003
+Name: Clara Williams
+Age: 19
+Course: Information Technology
+Email: clara.williams@example.com
+-------------------------
+StudentID: 1004
+Name: Daniel Brown
+Age: 21
+Course: Electrical Engineering
+Email: daniel.brown@example.com
+-------------------------
+StudentID: 1005
+Name: Emma Davis
+Age: 23
+Course: Business Administration
+Email: emma.davis@example.com

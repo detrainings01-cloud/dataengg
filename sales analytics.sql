@@ -1,0 +1,220 @@
+CREATE TABLE DIM_CUSTOMER (
+    CUSTOMER_ID INT PRIMARY KEY,  -- NO NULLS AND NO DUPLICATES
+    CUSTOMER_NAME VARCHAR(50),
+    EMAIL VARCHAR(100),
+    PHONE_NUMBER VARCHAR(20),
+    CITY VARCHAR(50),
+    STATE VARCHAR(50),
+    COUNTRY VARCHAR(50),
+    SIGNUP_DATE DATE
+);
+
+CREATE TABLE DIM_PRODUCT (
+    PRODUCT_ID INT PRIMARY KEY,
+    PRODUCT_NAME VARCHAR(100),
+    CATEGORY VARCHAR(50),
+    PRICE DECIMAL(10, 2),
+    STOCK_QUANTITY INT
+);
+
+CREATE TABLE DIM_DATE (
+    DATE_ID INT PRIMARY KEY,
+    DATE DATE,
+    YEAR INT,
+    MONTH INT,
+    MONTH_NAME VARCHAR(20),
+    DAY INT,
+    QUARTER INT
+);
+
+CREATE TABLE FACT_SALES (
+    ORDER_ID INT PRIMARY KEY,
+    ORDER_DATE DATE,
+    CUSTOMER_ID INT,
+    PRODUCT_ID INT,
+    DATE_ID INT,
+    QUANTITY_SOLD INT,
+    TOTAL_SALES DECIMAL(10, 2),
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES DIM_CUSTOMER(CUSTOMER_ID),  -- SHOULD BE A PRIMARY KEY IN ANOTHER TABLE
+    FOREIGN KEY (PRODUCT_ID) REFERENCES DIM_PRODUCT(PRODUCT_ID),
+    FOREIGN KEY (DATE_ID) REFERENCES DIM_DATE(DATE_ID)
+);
+
+-- Sample Data Insertion
+INSERT INTO DIM_CUSTOMER (CUSTOMER_ID, CUSTOMER_NAME, EMAIL, PHONE_NUMBER, CITY, STATE, COUNTRY, SIGNUP_DATE) VALUES
+(1, 'John Doe', 'john.doe@example.com', '123-456-7890', 'New York', 'NY', 'USA', '2023-01-15'),
+(2, 'Jane Smith', 'jane.smith@example.com', '987-654-3210', 'Los Angeles', 'CA', 'USA', '2023-02-20'),
+(3, 'Alice Johnson', 'alice.johnson@example.com', '555-123-4567', 'Chicago', 'IL', 'USA', '2023-03-10'),
+(4, 'Bob Brown', 'bob.brown@example.com', '444-555-6666', 'Houston', 'TX', 'USA', '2023-03-05'),
+(5, 'Charlie Davis', 'charlie.davis@example.com', '333-222-1111', 'Phoenix', 'AZ', 'USA', '2023-02-12');
+
+INSERT INTO DIM_PRODUCT (PRODUCT_ID, PRODUCT_NAME, CATEGORY, PRICE, STOCK_QUANTITY) VALUES
+(1, 'Laptop', 'Electronics', 999.99, 50),
+(2, 'Smartphone', 'Electronics', 499.99, 100),
+(3, 'Headphones', 'Accessories', 199.99, 200),
+(4, 'Office Chair', 'Furniture', 149.99, 30),
+(5, 'Coffee Maker', 'Appliances', 89.99, 80);   
+
+INSERT INTO DIM_DATE (DATE_ID, DATE, YEAR, MONTH, MONTH_NAME, DAY, QUARTER) VALUES
+(1, '2023-01-01', 2023, 1, 'January', 1, 1),
+(2, '2023-01-02', 2023, 1, 'January', 2, 1),
+(3, '2023-01-03', 2023, 1, 'January', 3, 1),
+(4, '2023-01-04', 2023, 1, 'January', 4, 1),
+(5, '2023-01-05', 2023, 1, 'January', 5, 1),
+(6, '2023-01-06', 2023, 1, 'January', 6, 1),
+(7, '2023-01-07', 2023, 1, 'January', 7, 1),
+(8, '2023-01-08', 2023, 1, 'January', 8, 1),
+(9, '2023-01-09', 2023, 1, 'January', 9, 1),
+(10, '2023-01-10', 2023, 1, 'January', 10, 1),
+(11, '2023-01-11', 2023, 1, 'January', 11, 1),
+(12, '2023-01-12', 2023, 1, 'January', 12, 1),
+(13, '2023-01-13', 2023, 1, 'January', 13, 1),
+(14, '2023-01-14', 2023, 1, 'January', 14, 1),
+(15, '2023-01-15', 2023, 1, 'January', 15, 1),
+(16, '2023-01-16', 2023, 1, 'January', 16, 1),
+(17, '2023-01-17', 2023, 1, 'January', 17, 1),
+(18, '2023-01-18', 2023, 1, 'January', 18, 1),
+(19, '2023-01-19', 2023, 1, 'January', 19, 1),
+(20, '2023-01-20', 2023, 1, 'January', 20, 1),
+(21, '2023-01-21', 2023, 1, 'January', 21, 1),
+(22, '2023-01-22', 2023, 1, 'January', 22, 1),
+(23, '2023-01-23', 2023, 1, 'January', 23, 1),
+(24, '2023-01-24', 2023, 1, 'January', 24, 1),
+(25, '2023-01-25', 2023, 1, 'January', 25, 1),
+(26, '2023-01-26', 2023, 1, 'January', 26, 1),
+(27, '2023-01-27', 2023, 1, 'January', 27, 1),
+(28, '2023-01-28', 2023, 1, 'January', 28, 1),
+(29, '2023-01-29', 2023, 1, 'January', 29, 1),
+(30, '2023-01-30', 2023, 1, 'January', 30, 1),
+(31, '2023-01-31', 2023, 1, 'January', 31, 1),
+(32, '2023-02-01', 2023, 2, 'February', 1, 1),
+(33, '2023-02-02', 2023, 2, 'February', 2, 1),
+(34, '2023-02-03', 2023, 2, 'February', 3, 1),
+(35, '2023-02-04', 2023, 2, 'February', 4, 1),
+(36, '2023-02-05', 2023, 2, 'February', 5, 1),
+(37, '2023-02-06', 2023, 2, 'February', 6, 1),
+(38, '2023-02-07', 2023, 2, 'February', 7, 1),
+(39, '2023-02-08', 2023, 2, 'February', 8, 1),
+(40, '2023-02-09', 2023, 2, 'February', 9, 1),
+(41, '2023-02-10', 2023, 2, 'February', 10, 1),
+(42, '2023-02-11', 2023, 2, 'February', 11, 1),
+(43, '2023-02-12', 2023, 2, 'February', 12, 1),
+(44, '2023-02-13', 2023, 2, 'February', 13, 1),
+(45, '2023-02-14', 2023, 2, 'February', 14, 1),
+(46, '2023-02-15', 2023, 2, 'February', 15, 1),
+(47, '2023-02-16', 2023, 2, 'February', 16, 1),
+(48, '2023-02-17', 2023, 2, 'February', 17, 1),
+(49, '2023-02-18', 2023, 2, 'February', 18, 1),
+(50, '2023-02-19', 2023, 2, 'February', 19, 1),
+(51, '2023-02-20', 2023, 2, 'February', 20, 1),
+(52, '2023-02-21', 2023, 2, 'February', 21, 1),
+(53, '2023-02-22', 2023, 2, 'February', 22, 1),
+(54, '2023-02-23', 2023, 2, 'February', 23, 1),
+(55, '2023-02-24', 2023, 2, 'February', 24, 1),
+(56, '2023-02-25', 2023, 2, 'February', 25, 1),
+(57, '2023-02-26', 2023, 2, 'February', 26, 1),
+(58, '2023-02-27', 2023, 2, 'February', 27, 1),
+(59, '2023-02-28', 2023, 2, 'February', 28, 1),
+(60, '2023-03-01', 2023, 3, 'March', 1, 1),
+(61, '2023-03-02', 2023, 3, 'March', 2, 1),
+(62, '2023-03-03', 2023, 3, 'March', 3, 1),
+(63, '2023-03-04', 2023, 3, 'March', 4, 1),
+(64, '2023-03-05', 2023, 3, 'March', 5, 1),
+(65, '2023-03-06', 2023, 3, 'March', 6, 1),
+(66, '2023-03-07', 2023, 3, 'March', 7, 1),
+(67, '2023-03-08', 2023, 3, 'March', 8, 1),
+(68, '2023-03-09', 2023, 3, 'March', 9, 1),
+(69, '2023-03-10', 2023, 3, 'March', 10, 1),
+(70, '2023-03-11', 2023, 3, 'March', 11, 1),
+(71, '2023-03-12', 2023, 3, 'March', 12, 1),
+(72, '2023-03-13', 2023, 3, 'March', 13, 1),
+(73, '2023-03-14', 2023, 3, 'March', 14, 1),
+(74, '2023-03-15', 2023, 3, 'March', 15, 1),
+(75, '2023-03-16', 2023, 3, 'March', 16, 1),
+(76, '2023-03-17', 2023, 3, 'March', 17, 1),
+(77, '2023-03-18', 2023, 3, 'March', 18, 1),
+(78, '2023-03-19', 2023, 3, 'March', 19, 1),
+(79, '2023-03-20', 2023, 3, 'March', 20, 1),
+(80, '2023-03-21', 2023, 3, 'March', 21, 1),
+(81, '2023-03-22', 2023, 3, 'March', 22, 1),
+(82, '2023-03-23', 2023, 3, 'March', 23, 1),
+(83, '2023-03-24', 2023, 3, 'March', 24, 1),
+(84, '2023-03-25', 2023, 3, 'March', 25, 1),
+(85, '2023-03-26', 2023, 3, 'March', 26, 1),
+(86, '2023-03-27', 2023, 3, 'March', 27, 1),
+(87, '2023-03-28', 2023, 3, 'March', 28, 1),
+(88, '2023-03-29', 2023, 3, 'March', 29, 1),
+(89, '2023-03-30', 2023, 3, 'March', 30, 1),
+(90, '2023-03-31', 2023, 3, 'March', 31, 1);
+
+INSERT INTO FACT_SALES (ORDER_ID, ORDER_DATE, CUSTOMER_ID, PRODUCT_ID, DATE_ID, QUANTITY_SOLD, TOTAL_SALES) VALUES
+(1, '2023-01-15', 1, 1, 15, 1, 999.99),
+(2, '2023-01-20', 2, 2, 20, 2, 999.98),
+(3, '2023-02-10', 3, 3, 41, 3, 599.97),
+(4, '2023-02-15', 4, 4, 46, 1, 149.99),
+(5, '2023-03-05', 5, 5, 65, 4, 359.96),
+(6, '2023-03-10', 1, 1, 70, 2, 1999.98),
+(7, '2023-03-15', 2, 2, 75, 1, 499.99),
+(8, '2023-03-20', 3, 3, 80, 5, 999.95),
+(9, '2023-03-25', 4, 4, 85, 3, 449.97),
+(10, '2023-03-30', 5, 5, 90, 2, 179.98),
+(11, '2023-01-18', 1, 2, 18, 1, 499.99),
+(12, '2023-01-22', 2, 3, 22, 2, 399.98),
+(13, '2023-02-12', 3, 4, 44, 1, 149.99),
+(14, '2023-02-18', 4, 5, 48, 3, 269.97),
+(15, '2023-03-08', 5, 1, 68, 1, 999.99),
+(16, '2023-03-12', 1, 2, 72, 4, 1999.96),
+(17, '2023-03-18', 2, 3, 78, 2, 399.98),
+(18, '2023-03-22', 3, 4, 82, 3, 449.97),
+(19, '2023-03-28', 4, 5, 88, 1, 89.99),
+(20, '2023-03-31', 5, 1, 90, 2, 1999.98);
+
+
+
+---  CLASS  43  window functions
+CREATE OR REPLACE TABLE sales_data (
+    order_id INT,
+    customer_id INT,
+    order_date DATE,
+    amount NUMBER(10,2),
+    region STRING
+);
+
+INSERT INTO sales_data VALUES
+(1, 101, '2024-01-01', 100, 'East'),
+(2, 101, '2024-01-02', 200, 'East'),
+(3, 101, '2024-01-03', 300, 'East'),
+(4, 102, '2024-01-01', 200, 'West'),
+(5, 102, '2024-01-02', 250, 'West'),
+(6, 102, '2024-01-03', 150, 'West'),
+(7, 102, '2024-01-06', 300, 'West'),
+(8, 103, '2024-01-03', 250, 'East'),
+(9, 103, '2024-01-07', 350, 'East'),
+(10, 104, '2024-01-04', 400, 'West'),
+(11, 104, '2024-01-08', 450, 'West'),
+(12, 105, '2024-01-09', 500, 'East'),
+(13, 105, '2024-01-10', 550, 'East');
+
+-- semi structured data
+{
+    "order_id":1001,
+    "customer": {"id": 101, "name": "John Doe", "email": "john.doe@example.com"},
+    "order_date": "2024-01-01",
+    "items": [
+        {"product_name": "Laptop", "quantity": 1, "price": 999.99},
+        {"product_name": "Mouse", "quantity": 1, "price": 200.00}
+    ],
+    "total_amount": 1199.99,
+    "payment_method": "Credit Card",
+}
+
+{
+    "order_id":1002,
+    "customer": {"id": 102, "name": "Jane Smith", "email": "jane.smith@example.com"},
+    "order_date": "2024-01-02",
+    "items": [
+        {"product_name": "Desktop", "quantity": 1, "price": 500.99}
+    ],
+    "total_amount": 500.99,
+    "payment_method": "Credit Card",
+}

@@ -1,0 +1,6 @@
+StudentID,Name,Age,Course,Email
+1001,Alice Johnson,20,Computer Science,alice.johnson@example.com
+1002,Brian Smith,22,Mechanical Engineering,brian.smith@example.com
+1003,Clara Williams,19,Information Technology,clara.williams@example.com
+1004,Daniel Brown,21,Electrical Engineering,daniel.brown@example.com
+1005,Emma Davis,23,Business Administration,emma.davis@example.com

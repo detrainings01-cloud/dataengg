@@ -1,0 +1,5 @@
+order_id,customer_id,product_id,region,sales_amount,order_date,product_name,category
+2,102,P2,South,1500.0,2020-02-20,Shirt,Clothing
+4,104,P3,West,1375.0,2021-04-05,Sofa,Home
+3,103,P3,East,1200.0,2021-03-10,Sofa,Home
+1,101,P1,North,1000.0,2020-01-15,Laptop,Electronics

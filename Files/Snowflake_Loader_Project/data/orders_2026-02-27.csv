@@ -1,0 +1,4 @@
+order_id,customer_id,customer_name,product,category,quantity,amount,updated_at
+1006,C106,Arjun,Monitor,Electronics,1,300,2026-02-27 08:30:00
+1007,C107,Priya,Sofa,Furniture,1,1200,2026-02-27 09:15:00
+1005,C105,Suresh,Headphones,Electronics,3,300,2026-02-27 10:45:00
