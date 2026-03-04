@@ -43,3 +43,27 @@
 2026-03-04 20:05:28  WARNING   table=transactions  rule=values(payment)  fails=2  detail=Invalid: ['crypto', None]
 2026-03-04 20:05:28  INFO      table=transactions  rule=fk(order_id → order_id)  fails=0  detail=OK
 2026-03-04 20:05:28  INFO      DONE: 7/23 rules passed
+2026-03-04 20:13:10  INFO      table=customers  rule=not_null(id)  fails=0  detail=OK
+2026-03-04 20:13:10  INFO      table=customers  rule=not_null(name)  fails=0  detail=OK
+2026-03-04 20:13:10  WARNING   table=customers  rule=not_null(email)  fails=1  detail=1 null/empty values
+2026-03-04 20:13:10  WARNING   table=customers  rule=unique(id)  fails=2  detail=Duplicates: [2]
+2026-03-04 20:13:10  WARNING   table=customers  rule=range(age, 0–120)  fails=2  detail=2 values outside [0, 120]
+2026-03-04 20:13:10  WARNING   table=customers  rule=format(email, email)  fails=1  detail=Bad values: ['not-an-email']
+2026-03-04 20:13:10  WARNING   table=customers  rule=no_future(joined)  fails=1  detail=1 future dates
+2026-03-04 20:13:10  WARNING   table=customers  rule=values(country)  fails=1  detail=Invalid: ['XX']
+2026-03-04 20:13:10  INFO      table=customers  rule=row_count(1–∞)  fails=0  detail=OK
+2026-03-04 20:13:10  INFO      table=orders  rule=not_null(order_id)  fails=0  detail=OK
+2026-03-04 20:13:10  WARNING   table=orders  rule=not_null(product)  fails=1  detail=1 null/empty values
+2026-03-04 20:13:10  INFO      table=orders  rule=unique(order_id)  fails=0  detail=OK
+2026-03-04 20:13:10  WARNING   table=orders  rule=range(amount, 0.01–50000)  fails=1  detail=1 values outside [0.01, 50000]
+2026-03-04 20:13:10  WARNING   table=orders  rule=range(qty, 1–9999)  fails=1  detail=1 values outside [1, 9999]
+2026-03-04 20:13:10  WARNING   table=orders  rule=values(status)  fails=1  detail=Invalid: ['INVALID']
+2026-03-04 20:13:10  WARNING   table=orders  rule=fk(customer_id → id)  fails=1  detail=Missing in parent: [99]
+2026-03-04 20:13:10  INFO      table=transactions  rule=not_null(txn_id)  fails=0  detail=OK
+2026-03-04 20:13:10  WARNING   table=transactions  rule=not_null(payment)  fails=1  detail=1 null/empty values
+2026-03-04 20:13:10  WARNING   table=transactions  rule=unique(txn_id)  fails=2  detail=Duplicates: [1004]
+2026-03-04 20:13:10  WARNING   table=transactions  rule=no_duplicate_rows  fails=2  detail=2 duplicate rows
+2026-03-04 20:13:10  WARNING   table=transactions  rule=range(amount, 0.01–100000)  fails=1  detail=1 values outside [0.01, 100000]
+2026-03-04 20:13:10  WARNING   table=transactions  rule=values(payment)  fails=2  detail=Invalid: ['crypto', None]
+2026-03-04 20:13:10  INFO      table=transactions  rule=fk(order_id → order_id)  fails=0  detail=OK
+2026-03-04 20:13:10  INFO      DONE: 7/23 rules passed
