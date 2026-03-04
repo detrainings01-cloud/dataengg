@@ -1,0 +1,54 @@
+# .github/workflows/deploy_dags.yml
+#
+# WHAT THIS DOES:
+#   Every time you push code to the "main" branch,
+#   this workflow automatically copies your dags/ folder
+#   to your S3 bucket (where MWAA picks them up).
+#
+# SETUP (one-time, in GitHub):
+#   Go to your repo → Settings → Secrets and variables → Actions
+#   The IAM user needs: s3:PutObject, s3:DeleteObject on your bucket.
+
+name: Deploy Airflow DAGs to S3
+
+on:
+  push:
+    branches:
+      - main          # Only triggers on push to main
+    paths:
+      - "dags/**"     # Only triggers if a file inside dags/ changed
+                      # (Saves time if you only changed README etc.)
+
+jobs:
+  deploy:
+    name: Upload DAGs to S3
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Pull your repo code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Connect to AWS using your stored secrets
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 3: Sync your local dags/ folder → S3 bucket's dags/ folder
+      #   --delete  → removes files from S3 that you deleted locally
+      #   --exclude → skips non-.py files like __pycache__, .DS_Store
+      - name: Sync DAGs to S3
+        run: |
+          aws s3 sync dags/ s3://de-mwaa-202603-ohio/dags/ \
+            --delete \
+            --exclude "__pycache__/*" \
+            --exclude "*.pyc" \
+            --exclude ".DS_Store"
+
+      # Step 4: Just a confirmation log so you can see what was deployed
+      - name: Show deployed files
+        run: |
+          echo "Deployed the following DAGs:"
+          aws s3 ls s3://de-mwaa-202603-ohio/dags/ --recursive
