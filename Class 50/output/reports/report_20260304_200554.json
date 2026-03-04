@@ -1,0 +1,273 @@
+{
+  "run_at": "2026-03-04 20:05:54",
+  "summary": {
+    "rules_total": 23,
+    "rules_passed": 7,
+    "rules_failed": 16,
+    "pass_rate": "30%",
+    "sla_total": 12,
+    "sla_passed": 6,
+    "sla_failed": 6
+  },
+  "rules": [
+    {
+      "rule": "not_null(id)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "customers"
+    },
+    {
+      "rule": "not_null(name)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "customers"
+    },
+    {
+      "rule": "not_null(email)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 null/empty values",
+      "table": "customers"
+    },
+    {
+      "rule": "unique(id)",
+      "passed": "False",
+      "fails": 2,
+      "detail": "Duplicates: [2]",
+      "table": "customers"
+    },
+    {
+      "rule": "range(age, 0\u2013120)",
+      "passed": "False",
+      "fails": 2,
+      "detail": "2 values outside [0, 120]",
+      "table": "customers"
+    },
+    {
+      "rule": "format(email, email)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "Bad values: ['not-an-email']",
+      "table": "customers"
+    },
+    {
+      "rule": "no_future(joined)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 future dates",
+      "table": "customers"
+    },
+    {
+      "rule": "values(country)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "Invalid: ['XX']",
+      "table": "customers"
+    },
+    {
+      "rule": "row_count(1\u2013\u221e)",
+      "passed": true,
+      "fails": 0,
+      "detail": "OK",
+      "table": "customers"
+    },
+    {
+      "rule": "not_null(order_id)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "orders"
+    },
+    {
+      "rule": "not_null(product)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 null/empty values",
+      "table": "orders"
+    },
+    {
+      "rule": "unique(order_id)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "orders"
+    },
+    {
+      "rule": "range(amount, 0.01\u201350000)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 values outside [0.01, 50000]",
+      "table": "orders"
+    },
+    {
+      "rule": "range(qty, 1\u20139999)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 values outside [1, 9999]",
+      "table": "orders"
+    },
+    {
+      "rule": "values(status)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "Invalid: ['INVALID']",
+      "table": "orders"
+    },
+    {
+      "rule": "fk(customer_id \u2192 id)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "Missing in parent: [99]",
+      "table": "orders"
+    },
+    {
+      "rule": "not_null(txn_id)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "transactions"
+    },
+    {
+      "rule": "not_null(payment)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 null/empty values",
+      "table": "transactions"
+    },
+    {
+      "rule": "unique(txn_id)",
+      "passed": "False",
+      "fails": 2,
+      "detail": "Duplicates: [1004]",
+      "table": "transactions"
+    },
+    {
+      "rule": "no_duplicate_rows",
+      "passed": "False",
+      "fails": 2,
+      "detail": "2 duplicate rows",
+      "table": "transactions"
+    },
+    {
+      "rule": "range(amount, 0.01\u2013100000)",
+      "passed": "False",
+      "fails": 1,
+      "detail": "1 values outside [0.01, 100000]",
+      "table": "transactions"
+    },
+    {
+      "rule": "values(payment)",
+      "passed": "False",
+      "fails": 2,
+      "detail": "Invalid: ['crypto', None]",
+      "table": "transactions"
+    },
+    {
+      "rule": "fk(order_id \u2192 order_id)",
+      "passed": "True",
+      "fails": 0,
+      "detail": "OK",
+      "table": "transactions"
+    }
+  ],
+  "sla": [
+    {
+      "table": "customers",
+      "check": "freshness",
+      "passed": true,
+      "value": "2.0h",
+      "limit": "24h",
+      "detail": "Data is 2.0h old (limit: 24h)"
+    },
+    {
+      "table": "customers",
+      "check": "pass_rate",
+      "passed": false,
+      "value": "33%",
+      "limit": "90%",
+      "detail": "Pass rate 33% (minimum: 90%)"
+    },
+    {
+      "table": "customers",
+      "check": "volume",
+      "passed": true,
+      "value": "10 rows",
+      "limit": "1\u20131000000",
+      "detail": "10 rows (expected 1\u20131000000)"
+    },
+    {
+      "table": "customers",
+      "check": "latency",
+      "passed": true,
+      "value": "45s",
+      "limit": "300s",
+      "detail": "Ran in 45s (limit: 300s)"
+    },
+    {
+      "table": "orders",
+      "check": "freshness",
+      "passed": false,
+      "value": "8.0h",
+      "limit": "6h",
+      "detail": "Data is 8.0h old (limit: 6h)"
+    },
+    {
+      "table": "orders",
+      "check": "pass_rate",
+      "passed": false,
+      "value": "29%",
+      "limit": "95%",
+      "detail": "Pass rate 29% (minimum: 95%)"
+    },
+    {
+      "table": "orders",
+      "check": "volume",
+      "passed": true,
+      "value": "10 rows",
+      "limit": "1\u20135000000",
+      "detail": "10 rows (expected 1\u20135000000)"
+    },
+    {
+      "table": "orders",
+      "check": "latency",
+      "passed": false,
+      "value": "720s",
+      "limit": "600s",
+      "detail": "Ran in 720s (limit: 600s)"
+    },
+    {
+      "table": "transactions",
+      "check": "freshness",
+      "passed": false,
+      "value": "2.0h",
+      "limit": "1h",
+      "detail": "Data is 2.0h old (limit: 1h)"
+    },
+    {
+      "table": "transactions",
+      "check": "pass_rate",
+      "passed": false,
+      "value": "29%",
+      "limit": "98%",
+      "detail": "Pass rate 29% (minimum: 98%)"
+    },
+    {
+      "table": "transactions",
+      "check": "volume",
+      "passed": true,
+      "value": "9 rows",
+      "limit": "1\u201350000000",
+      "detail": "9 rows (expected 1\u201350000000)"
+    },
+    {
+      "table": "transactions",
+      "check": "latency",
+      "passed": true,
+      "value": "90s",
+      "limit": "120s",
+      "detail": "Ran in 90s (limit: 120s)"
+    }
+  ]
+}
