@@ -1,0 +1,172 @@
+Snowflake Architecture:
+######################################
+Database Storage:
+	Centralized Storage (s3/Blob/GCS)
+	Fully managed by Snowflake 
+	Data Stored in Compressed Columnar Format
+	micro-partitions (16MB-512MB)
+	
+Key Feature 
+Columnar Storage -> Optimized for Analytics.
+Automatic Compression   -> No Manual tuning
+Micro Partitions -> Automatic Clustering 	
+Time Travel     -> Historical Data 
+Fail-Safe       -> Disaster Recovery Feature 
+
+-> Copy commands 
+-> Data will be creaked into Micro Partitions 
+-> Meta Data ->  Min/Max Column Values | Distinct Values | Null COunts  
+-> Pruning  
+-> No Indexing concept 
+-> Automatic Clustering 
+
+######################################
+Compute Layer:
+
+Virtual Warehouses: 
+	-> Independanct Compute cluster 
+	-> Used for running the queries  
+	-> Scale independantly  (XS  S  M  L  XL  2XL  3XL  4XL) 
+				Heavy Transformatoins | Large Joins 
+	
+Key Concepts:
+Auto Suspend 
+Auto Resume
+Multi-Cluster 
+Scalling UP/Down   -->   Vertical Scaling  
+Scalling In/Out -->  Horizontal Scaling 	
+
+######################################
+Cloud Service Layer:
+-> Security  (Authentication)
+-> Metadata   
+-> Optimizations 
+-> Management (control access)
+
+SELECT region, sum(amount) 
+from sales 
+where order_date >= '2025-01-01'
+group by region ;
+
+Step 1:
+->  Parse query -> Logical plan  -> Optimization -> Micro-Partitions 
+Step 2: Pruning 
+->  Check for metadata  ->  Skip the irrelevant partition  ->  Reduce the Scan Size 
+Step 3: Compute Layer 
+->  WH excute the query  -> Read the data  -> Aggregate the data 
+Step 4: Result Cache
+-> 24 Hours   -> - No cost for same query again and again 
+
+######################################
+Caching in Snowflake: 
+Result Cache: 
+	24 hours 
+	No warehouse 
+	Same query text 
+	
+Local Disk Cache:
+	Keep all the data which was read  
+	Works only if warehouse not suspended
+	
+Remote Disk Cache:
+	Stored in Clould Storage 
+
+######################################
+Data Sharing: 
+	Snowflake allow secure data sharing without copying the data
+	
+	Producer 
+		Create a share  
+		grant objects to the share  
+	Consumer 
+		create a database for the shared db 
+		
+	No Data Duplication 
+	Real-time data 
+	Storage cost - only for once 
+	
+######################################
+Snowflake Editions: 
+	Standard 					Basic
+	Enterprise 					Multi Cluster  
+	Business Critical 			Extra Secure 
+	Virtual Private Snowflake 	Isolated Infrastructure 
+	
+
+######################################
+Storage and Cost Model:
+
+Credits -   1 Credit ~= $3  -->    Virtual Warehouses  (5 Minutes - Per Minute)/(1 Minute - Seconds)
+
+Storage - 1TB/Month  - $23	
+
+Cloud Services  -  ~10% of Compute cost 
+######################################
+
+Snowflake Internal Services: 
+	Streams (CDC)
+	Tasks (Scheduling) 
+	Snowpipe (Auto Ingestion)
+	Search Optimization Service 
+	Materialized Views 
+	Dynamic Tables 
+	
+###########################################
+Databases:
+	Logical Container for Schemas 
+	
+	Account 
+		Database
+			Schema 
+				Tables / Views / Stages / Streams / 
+				
+	
+Types of Databases: 
+Permanent  -> Time Travel  -> Prod Ready 
+Transient  -> ETL 
+Shared 	->  Data Sharing 
+Cloned 	->  
+
+Database level features: 
+	Time Travel | Failsafe | Zero Copy Cloning 
+	
+	create database DB_1 ;
+	
+	Schema: 
+		Logical seperation 
+		RBAC (Role Based Access Control)
+			create schema raw; 
+			create schema stage; 
+			create schema dwh; 
+			create schema mart; 
+
+		Permanent
+		Transient
+		Temporary 
+	
+Roles: 
+	Snowflake Security -> Contolled using Roles 
+					->  Not Users 
+					
+	Everything is granted to Role 
+		Users are assigned to these roles.
+		
+Types of Roles: 
+Account Roles: 
+	Warehouses 
+	Databases 
+	Users 
+	Global Privilages 
+
+	CREATE ROLE ETL_ROLE; 
+	
+DATABASE ROLES:
+	Object level isolation with in a Database 
+	
+SYSTEM ROLES: 
+	ACCOUNT ADMIN  -> FULL ACCESS 
+	SECURITYADMIN  ->  MANAGES ROLES 
+	SYSADMIN       -> CREATE OBJECTS 
+	USER ADMIN      ->  MANAGE USERS 
+	PUBLIC         ->  DEFAULT ROLE  
+	
