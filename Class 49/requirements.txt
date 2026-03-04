@@ -1,0 +1,8 @@
+# ── MWAA 3.0.6 + Python 3.12 ─────────────────────────────────────────────────
+--constraint "https://raw.githubusercontent.com/apache/airflow/constraints-3.0.6/constraints-3.12.txt"
+
+apache-airflow-providers-snowflake
+apache-airflow-providers-amazon
+apache-airflow-providers-common-sql
+snowflake-connector-python
+snowflake-sqlalchemy
