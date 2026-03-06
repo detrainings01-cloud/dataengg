@@ -45,9 +45,14 @@ RECORDINGS_DIR = Path(r"D:\DE 202512\Recordings")
 CODEFILES_DIR  = Path(r"D:\DE 202512\CodeFiles")
 OUTPUT_DIR     = Path(r"D:\DE 202512\Output")
 
-# Light compression: CRF 28, ultrafast preset  (~65-70% of original size, much faster)
+# Stream-copy mode: video is NOT re-encoded (just copied as-is).
+# This is near-instant, lossless, and always produces a smaller or equal file.
+# FFmpeg only remuxes the container — no quality loss whatsoever.
+STREAM_COPY = True
+
+# Only used if STREAM_COPY = False  (re-encode fallback)
 FFMPEG_CRF    = "28"
-FFMPEG_PRESET = "ultrafast"
+FFMPEG_PRESET = "medium"   # medium gives real compression unlike ultrafast
 
 # -----------------------------------------------------------------
 #  HELPERS
@@ -103,19 +108,52 @@ def folder_name_for_class(files: list[Path]) -> str:
     return (mp4 if mp4 else files[0]).stem   # e.g. "3_Conditional STMTs and Loops"
 
 
-MAX_RETRIES = 3   # number of compression attempts before giving up
+MAX_RETRIES = 3   # number of attempts before giving up on a file
+
+def build_ffmpeg_cmd(src: Path, tmp_dst: Path) -> list[str]:
+    """
+    Build the FFmpeg command based on STREAM_COPY setting.
+
+    STREAM_COPY = True  (default, recommended):
+        Video stream is copied byte-for-byte — no re-encoding.
+        Result is always <= original size, near-instant, zero quality loss.
+
+    STREAM_COPY = False:
+        Full re-encode with H.264. Use only if you need to shrink a file
+        that was recorded in a high-bitrate / lossless codec.
+        Set FFMPEG_PRESET = "medium" or "slow" for real size savings.
+    """
+    if STREAM_COPY:
+        return [
+            "ffmpeg", "-y",
+            "-i",      str(src),
+            "-c:v",    "copy",     # copy video stream as-is (no re-encode)
+            "-c:a",    "aac",      # re-encode audio to AAC (safe, small)
+            "-b:a",    "128k",
+            str(tmp_dst),
+        ]
+    else:
+        return [
+            "ffmpeg", "-y",
+            "-i",      str(src),
+            "-vcodec", "libx264",
+            "-crf",    FFMPEG_CRF,
+            "-preset", FFMPEG_PRESET,
+            "-acodec", "aac",
+            "-b:a",    "128k",
+            str(tmp_dst),
+        ]
+
 
 def compress_video(src: Path, dst: Path) -> bool:
     """
-    Compress src to dst using FFmpeg H.264 / AAC.
+    Process src -> dst with retry mechanism.
 
-    Retry mechanism:
-      - Writes to a .tmp.mp4 first; renames to dst only on full success.
-      - If a .tmp.mp4 already exists (leftover from a crashed run), it is
-        deleted before the next attempt starts.
-      - Retries up to MAX_RETRIES times on any failure.
-      - On Ctrl+C the temp file is cleaned up before exiting.
-      - A completed dst file is NEVER overwritten or re-processed.
+    - Writes to a .tmp.mp4 first; renames to final name only on success.
+    - Leftover .tmp.mp4 files (from a previous crash) are cleaned up automatically.
+    - A completed dst file is NEVER re-processed.
+    - Retries up to MAX_RETRIES times on failure.
+    - Ctrl+C cleans up the temp file before exiting.
     """
     # Already done — skip immediately
     if dst.exists() and dst.stat().st_size > 0:
@@ -133,16 +171,7 @@ def compress_video(src: Path, dst: Path) -> bool:
         if attempt > 1:
             print(f"     Retrying... (attempt {attempt}/{MAX_RETRIES})")
 
-        cmd = [
-            "ffmpeg", "-y",
-            "-i", str(src),
-            "-vcodec", "libx264",
-            "-crf",    FFMPEG_CRF,
-            "-preset", FFMPEG_PRESET,
-            "-acodec", "aac",
-            "-b:a",    "128k",
-            str(tmp_dst),
-        ]
+        cmd = build_ffmpeg_cmd(src, tmp_dst)
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
@@ -154,13 +183,11 @@ def compress_video(src: Path, dst: Path) -> bool:
                 tmp_dst.rename(dst)
                 return True
 
-            # FFmpeg returned non-zero or produced an empty file
             print(f"     X Attempt {attempt}/{MAX_RETRIES} failed.")
             if result.stderr:
                 print(f"       FFmpeg: {result.stderr[-300:]}")
 
         except KeyboardInterrupt:
-            # User pressed Ctrl+C — clean up and exit gracefully
             if tmp_dst.exists():
                 tmp_dst.unlink()
             print("\n  Interrupted. Temp file cleaned up. Exiting.")
@@ -170,7 +197,6 @@ def compress_video(src: Path, dst: Path) -> bool:
             print(f"     X Attempt {attempt}/{MAX_RETRIES} raised an error: {e}")
 
         finally:
-            # Safety net: always remove the temp file if it wasn't renamed
             if tmp_dst.exists():
                 tmp_dst.unlink()
 
@@ -284,3 +310,4 @@ def run() -> None:
 
 if __name__ == "__main__":
     run()
+    
