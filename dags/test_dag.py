@@ -19,9 +19,9 @@ def confirm_pipeline():
 # ── DAG Definition ──────────────────────────────────────
 
 with DAG(
-    dag_id="test_cicd_dag",          # Name shown in Airflow UI
+    dag_id="test_cicd_dag",
     start_date=datetime(2024, 1, 1),
-    schedule_interval=None,           # Only runs when triggered manually
+    schedule=None,       # Updated parameter
     catchup=False,
     tags=["test", "cicd"],
 ) as dag:
@@ -41,5 +41,4 @@ with DAG(
         python_callable=confirm_pipeline,
     )
 
-    # Task order: task1 → task2 → task3
     task1 >> task2 >> task3

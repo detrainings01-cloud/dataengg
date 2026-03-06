@@ -43,7 +43,6 @@ jobs:
       - name: Sync DAGs to S3
         run: |
           aws s3 sync dags/ s3://de-mwaa-202603-ohio/dags/ \
-            --delete \
             --exclude "__pycache__/*" \
             --exclude "*.pyc" \
             --exclude ".DS_Store"
